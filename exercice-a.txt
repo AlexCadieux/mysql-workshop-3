@@ -1,0 +1,15 @@
+mysql> SELECT id, COUNT(accountId) AS Total FROM AddressBook GROUP BY accountId ORDER BY Total DESC LIMIT 1;
++-----+-------+
+| id  | Total |
++-----+-------+
+| 108 |    19 |
++-----+-------+
+1 row in set (0.01 sec)
+
+mysql> SELECT id, COUNT(addressBookId) AS Total FROM Entry GROUP BY addressBookId ORDER BY Total DESC LIMIT 1;
++----+-------+
+| id | Total |
++----+-------+
+| 52 |    52 |
++----+-------+
+1 row in set (0.00 sec)
