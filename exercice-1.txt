@@ -1,0 +1,39 @@
+CREATE TABLE Account (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(40) NOT NULL,
+    createdOn DATETIME NOT NULL,
+    modifiedOn DATETIME
+);
+
+ALTER TABLE AddressBook ADD FOREIGN KEY (accountId) REFERENCES Account(id);
+
+CREATE TABLE Phone (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    entryId INT NOT NULL,
+    type ENUM('home', 'work', 'other') NOT NULL,
+    subtype ENUM('landline', 'cellular', 'fax') NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    FOREIGN KEY (entryId) REFERENCES Entry(id)
+);
+
+CREATE TABLE Address (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    entryId INT NOT NULL,
+    type ENUM('home', 'work', 'other') NOT NULL,
+    addressLine1 VARCHAR(255) NOT NULL,
+    addressLine2 VARCHAR(255),
+    city VARCHAR(255) NOT NULL,
+    province VARCHAR(128) NOT NULL,
+    country VARCHAR(128) NOT NULL,
+    postalCode VARCHAR(10) NOT NULL,
+    FOREIGN KEY (entryId) REFERENCES Entry(id)
+);
+
+CREATE TABLE ElectronicMail (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    entryId INT NOT NULL,
+    type ENUM('home', 'work', 'other') NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    FOREIGN KEY (entryId) REFERENCES Entry(id)
+);
