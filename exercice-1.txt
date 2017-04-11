@@ -6,8 +6,18 @@ CREATE TABLE Account (
     modifiedOn DATETIME
 );
 
-ALTER TABLE AddressBook ADD FOREIGN KEY (accountId) REFERENCES Account(id);
+DROP TABLE IF EXISTS Entry;
+CREATE TABLE Entry (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    addressBookId INT NOT NULL,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255),
+    birthday DATETIME,
+    type ENUM('phone', 'address', 'electronic-mail'),
+    FOREIGN KEY (addressBookId) REFERENCES AddressBook(id)
+);
 
+DROP TABLE IF EXISTS Phone;
 CREATE TABLE Phone (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entryId INT NOT NULL,
@@ -17,6 +27,7 @@ CREATE TABLE Phone (
     FOREIGN KEY (entryId) REFERENCES Entry(id)
 );
 
+DROP TABLE IF EXISTS Address;
 CREATE TABLE Address (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entryId INT NOT NULL,
@@ -30,6 +41,7 @@ CREATE TABLE Address (
     FOREIGN KEY (entryId) REFERENCES Entry(id)
 );
 
+DROP TABLE IF EXISTS ElectronicMail;
 CREATE TABLE ElectronicMail (
     id INT AUTO_INCREMENT PRIMARY KEY,
     entryId INT NOT NULL,
@@ -37,3 +49,56 @@ CREATE TABLE ElectronicMail (
     content VARCHAR(255) NOT NULL,
     FOREIGN KEY (entryId) REFERENCES Entry(id)
 );
+
+mysql> DESCRIBE Phone;
++---------+-----------------------------------+------+-----+---------+----------------+
+| Field   | Type                              | Null | Key | Default | Extra          |
++---------+-----------------------------------+------+-----+---------+----------------+
+| id      | int(11)                           | NO   | PRI | NULL    | auto_increment |
+| entryId | int(11)                           | NO   | MUL | NULL    |                |
+| type    | enum('home','work','other')       | NO   |     | NULL    |                |
+| subtype | enum('landline','cellular','fax') | NO   |     | NULL    |                |
+| content | varchar(255)                      | NO   |     | NULL    |                |
++---------+-----------------------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> DESCRIBE Address;
++--------------+-----------------------------+------+-----+---------+----------------+
+| Field        | Type                        | Null | Key | Default | Extra          |
++--------------+-----------------------------+------+-----+---------+----------------+
+| id           | int(11)                     | NO   | PRI | NULL    | auto_increment |
+| entryId      | int(11)                     | NO   | MUL | NULL    |                |
+| type         | enum('home','work','other') | NO   |     | NULL    |                |
+| addressLine1 | varchar(255)                | NO   |     | NULL    |                |
+| addressLine2 | varchar(255)                | YES  |     | NULL    |                |
+| city         | varchar(255)                | NO   |     | NULL    |                |
+| province     | varchar(128)                | NO   |     | NULL    |                |
+| country      | varchar(128)                | NO   |     | NULL    |                |
+| postalCode   | varchar(10)                 | NO   |     | NULL    |                |
++--------------+-----------------------------+------+-----+---------+----------------+
+9 rows in set (0.00 sec)
+
+mysql> DESCRIBE ElectronicMail;
++---------+-----------------------------+------+-----+---------+----------------+
+| Field   | Type                        | Null | Key | Default | Extra          |
++---------+-----------------------------+------+-----+---------+----------------+
+| id      | int(11)                     | NO   | PRI | NULL    | auto_increment |
+| entryId | int(11)                     | NO   | MUL | NULL    |                |
+| type    | enum('home','work','other') | NO   |     | NULL    |                |
+| content | varchar(255)                | NO   |     | NULL    |                |
++---------+-----------------------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESCRIBE Entry
+    -> ;
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| Field         | Type                                      | Null | Key | Default | Extra          |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| id            | int(11)                                   | NO   | PRI | NULL    | auto_increment |
+| addressBookId | int(11)                                   | NO   | MUL | NULL    |                |
+| firstName     | varchar(255)                              | NO   |     | NULL    |                |
+| lastName      | varchar(255)                              | YES  |     | NULL    |                |
+| birthday      | datetime                                  | YES  |     | NULL    |                |
+| type          | enum('phone','address','electronic-mail') | NO   |     | NULL    |                |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
