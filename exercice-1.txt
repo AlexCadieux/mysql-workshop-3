@@ -1,7 +1,17 @@
+DROP TABLE IF EXISTS Account;
 CREATE TABLE Account (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(40) NOT NULL,
+    createdOn DATETIME NOT NULL,
+    modifiedOn DATETIME
+);
+
+DROP TABLE IF EXISTS AddressBook;
+CREATE TABLE AddressBook (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    accountId INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
     createdOn DATETIME NOT NULL,
     modifiedOn DATETIME
 );
